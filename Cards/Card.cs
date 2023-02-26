@@ -1,18 +1,37 @@
 namespace Cards
 {
+    enum Suit
+    {
+        Clubs,
+        Diamonds,
+        Hearts,
+        Spades
+    }
+
+    enum Rank
+    {
+        Ace = 1,
+        Two,
+        Three,
+        Four,
+        Five,
+        Six,
+        Seven,
+        Eight,
+        Nine,
+        Ten,
+        Jack,
+        Queen,
+        King
+    }
+
     class Card
     {
-        public int Suit { get; set; }
-        public int Rank { get; set; }
-        public string Name { get; set; }
+        public Suit Suit { get; set; }
+        public Rank Rank { get; set; }
 
-        public Card(int suit, int rank)
+        public Card(Suit suit, Rank rank)
         {
-            if (suit < 0 || suit > 3)
-                throw new System.ArgumentException("Invalid suit. Must be between 0 and 3", "suit");
-            if (rank < 1 || rank > 13)
-                throw new System.ArgumentException("Invalid rank. Must be between 1 and 13", "rank");
-
             Suit = suit;
             Rank = rank;
         }

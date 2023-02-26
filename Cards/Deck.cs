@@ -15,16 +15,11 @@ namespace Cards
 
             for (int i = 0; i < 4; i++)
             {
-                for (int j = 0; j < 13; j++)
+                for (int j = 1; j < 14; j++)
                 {
-                    cards.Add(new Card(i, j));
+                    cards.Add(new Card((Suit)i, (Rank)j));
                 }
             }
-        }
-
-        public Deck(IEnumerable<Card> initialCards)
-        {
-            cards = new List<Card>(initialCards);
         }
 
         public int Count
@@ -32,9 +27,22 @@ namespace Cards
             get { return cards.Count; }
         }
 
+        public Card this[int i]
+        {
+            get { return cards[i]; }
+            set { cards[i] = value; }
+        }
+
         public void Add(Card card)
         {
             cards.Add(card);
+        }
+
+        public Card Deal()
+        {
+            Card cardToDeal = cards[0];
+            cards.RemoveAt(0);
+            return cardToDeal;
         }
 
         public Card Deal(int index)
@@ -56,24 +64,14 @@ namespace Cards
             cards = shuffledCards;
         }
 
-        public IEnumerable<string> GetCardNames()
+        public string[] GetCardNames()
         {
             string[] cardNames = new string[cards.Count];
             for (int i = 0; i < cards.Count; i++)
             {
-                cardNames[i] = cards[i].Name;
+                cardNames[i] = cards[i].ToString();
             }
             return cardNames;
-        }
-
-        public void Sort()
-        {
-            // cards.Sort( TODO: Add a comparison method here );
-        }
-
-        public void SortByValue()
-        {
-            // cards.Sort( TODO: Add a comparison method here );
         }
     }
 }
