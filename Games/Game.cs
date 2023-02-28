@@ -16,33 +16,18 @@ namespace Games
 
         public abstract void Play();
 
-        internal class Player
+        internal abstract class Player
         {
             public string Name { get; set; }
-            public List<Card> Hand { get; set; }
+            public EmptyDeck Hand { get; set; }
 
             public Player(string name)
             {
                 Name = name;
-                Hand = new List<Card>();
+                Hand = new EmptyDeck();
             }
 
-            public void Draw(Deck deck)
-            {
-                Hand.Add(deck.Deal(0));
-            }
-
-            public Card Flip()
-            {
-                Card cardToFlip = Hand[0];
-                Hand.RemoveAt(0);
-                return cardToFlip;
-            }
-
-            public void ReceiveCard(Card card)
-            {
-                Hand.Add(card);
-            }
+            public abstract int Score { get; }
 
             public override string ToString()
             {

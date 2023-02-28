@@ -5,7 +5,7 @@ namespace Cards
 {
     class Deck
     {
-        private List<Card> cards;
+        protected List<Card> cards;
         private Random random;
 
         public Deck()

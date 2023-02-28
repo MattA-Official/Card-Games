@@ -1,4 +1,5 @@
 ﻿using System;
+using Games;
 
 namespace Card_Games
 {
@@ -6,7 +7,12 @@ namespace Card_Games
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            // Play a game of Blackjack. TODO: Make this a menu.
+            BlackjackGame blackjackGame = new BlackjackGame(2);
+            blackjackGame.Play();
+
+            Console.WriteLine("Press any key to exit.");
+            Console.ReadKey();
         }
     }
 }
