@@ -1,11 +1,12 @@
 using System;
+using System.Collections.Generic;
 using Cards;
 
 namespace Games
 {
     class BlackjackGame : Game
     {
-        // TODO: add a dealer
+        private BlackjackPlayer dealer;
 
         public BlackjackGame(int playerCount)
         {
@@ -15,17 +16,68 @@ namespace Games
                 string name = Console.ReadLine();
                 players.Add(new BlackjackPlayer(name));
             }
+
+            dealer = new BlackjackPlayer("Dealer");
         }
 
         public override void Play()
         {
             deck.Shuffle();
 
-            // Deal two cards to each player.
+            // Deal two cards to the dealer.
+            dealer.Hand.Add(deck.Deal());
             foreach (BlackjackPlayer player in players)
             {
                 player.Hand.Add(deck.Deal());
+            }
+
+            dealer.Hand.Add(deck.Deal());
+            foreach (BlackjackPlayer player in players)
+            {
                 player.Hand.Add(deck.Deal());
+            }
+
+            // Output the hands of the players and the first card of the dealer.
+            List<Rank> checkRanks = new List<Rank>
+            {
+                Rank.Ace,
+                Rank.Ten,
+                Rank.Jack,
+                Rank.Queen,
+                Rank.King
+            };
+            // check face up card of dealer
+            if (checkRanks.Contains(dealer.Hand[0].Rank) && dealer.Score == 21)
+            {
+                Console.WriteLine("The dealer has a blackjack! Game over.");
+                return;
+            }
+            else
+            {
+                Console.WriteLine("The dealer has: " + dealer.Hand[0] + " and an unknown card.");
+            }
+
+            foreach (BlackjackPlayer player in players)
+            {
+                Console.WriteLine(player);
+            }
+
+            bool naturalBlackjack = false;
+
+            // Check if any player has a blackjack.
+            foreach (BlackjackPlayer player in players)
+            {
+                if (player.Score == 21)
+                {
+                    Console.WriteLine(player.Name + " has a blackjack!");
+                    naturalBlackjack = true;
+                }
+            }
+
+            // If there is a blackjack, the game is over.
+            if (naturalBlackjack)
+            {
+                return;
             }
 
             // Let players take turns drawing cards. They can draw as many cards as they want until they are bust. The player with the highest score wins.
@@ -43,10 +95,6 @@ namespace Games
                     if (input == "y")
                     {
                         player.Hand.Add(deck.Deal());
-                        if (player.Score == -1)
-                        {
-                            Console.WriteLine($"{player.Name} is bust!");
-                        }
                     }
                     else if (input == "n")
                     {
@@ -59,7 +107,33 @@ namespace Games
                     }
 
                     // Output the player's hand.
-                    Console.WriteLine(player);
+                    if (player.Score == -1)
+                    {
+                        Console.WriteLine($"{player.Name} is bust!");
+                    }
+                    else
+                    {
+                        Console.WriteLine(player);
+                    }
+                }
+
+                if (!AnyIsBust())
+                {
+                    // Let the dealer draw cards until they have at least 17 points.
+                    if (dealer.Score < 17)
+                    {
+                        dealer.Hand.Add(deck.Deal());
+                    }
+
+                    // Output the dealer's hand.
+                    if (dealer.Score == -1)
+                    {
+                        Console.WriteLine("The dealer is bust!");
+                    }
+                    else
+                    {
+                        Console.WriteLine(dealer);
+                    }
                 }
             } while (!AnyIsBust() && !AllStick());
 
@@ -86,7 +160,14 @@ namespace Games
                         winner = player;
                     }
                 }
+
+                if (dealer.Score > winner.Score)
+                {
+                    winner = (BlackjackPlayer)dealer;
+                }
             }
+
+            Console.WriteLine($"The winner is {winner.Name} with {winner.Score} points!");
         }
 
         private bool AnyIsBust()
@@ -98,6 +179,12 @@ namespace Games
                     return true;
                 }
             }
+
+            if (dealer.Score == -1)
+            {
+                return true;
+            }
+
             return false;
         }
 
@@ -110,6 +197,12 @@ namespace Games
                     return false;
                 }
             }
+
+            if (!dealer.Stick)
+            {
+                return false;
+            }
+
             return true;
         }
 

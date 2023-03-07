@@ -40,9 +40,16 @@ namespace Cards
 
         public Card Deal()
         {
-            Card cardToDeal = cards[0];
-            cards.RemoveAt(0);
-            return cardToDeal;
+            if (cards.Count != 0)
+            {
+                Card cardToDeal = cards[0];
+                cards.RemoveAt(0);
+                return cardToDeal;
+            }
+            else
+            {
+                return null;
+            }
         }
 
         public Card Deal(int index)
