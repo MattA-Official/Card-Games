@@ -74,10 +74,16 @@ namespace Games
                 }
             }
 
-            // If there is a blackjack, the game is over.
+            // If there is a blackjack, remove the players who have blackjack from the list of players.
             if (naturalBlackjack)
             {
-                return;
+                for (int i = players.Count - 1; i >= 0; i--)
+                {
+                    if (players[i].Score == 21)
+                    {
+                        players.RemoveAt(i);
+                    }
+                }
             }
 
             // Let players take turns drawing cards. They can draw as many cards as they want until they are bust. The player with the highest score wins.
