@@ -124,6 +124,10 @@ namespace Games
                     {
                         dealer.Hand.Add(deck.Deal());
                     }
+                    else
+                    {
+                        dealer.Stick = true;
+                    }
 
                     // Output the dealer's hand.
                     if (dealer.Score == -1)
