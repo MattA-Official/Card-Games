@@ -150,17 +150,17 @@ namespace Games
             Console.WriteLine("Game over!");
 
             // Ouput the winner.
-            BlackjackPlayer winner;
+            BlackjackPlayer winner = null;
 
-            if (players[0].Score == -1)
+            for (int i = players.Count - 1; i >= 0; i--)
             {
-                winner = (BlackjackPlayer)players[1];
+                if (players[i].Score == -1)
+                {
+                    winner = (BlackjackPlayer)players[i];
+                }
             }
-            else if (players[1].Score == -1)
-            {
-                winner = (BlackjackPlayer)players[0];
-            }
-            else
+
+            if (winner == null)
             {
                 winner = (BlackjackPlayer)players[0];
                 foreach (BlackjackPlayer player in players)
