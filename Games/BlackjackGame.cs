@@ -112,6 +112,12 @@ namespace Games
                         player.Stick = true;
                     }
 
+                    // Five card rule
+                    if (player.Hand.Count == 5)
+                    {
+                        player.Stick = true;
+                    }
+
                     // Output the player's hand.
                     if (player.Score == -1)
                     {
@@ -152,28 +158,26 @@ namespace Games
             // Ouput the winner.
             BlackjackPlayer winner = null;
 
-            for (int i = players.Count - 1; i >= 0; i--)
+            winner = (BlackjackPlayer)players[0];
+            foreach (BlackjackPlayer player in players)
             {
-                if (players[i].Score == -1)
+                if (player.Score > winner.Score)
                 {
-                    winner = (BlackjackPlayer)players[i];
+                    winner = player;
                 }
             }
 
-            if (winner == null)
+            if (dealer.Score > winner.Score)
             {
-                winner = (BlackjackPlayer)players[0];
-                foreach (BlackjackPlayer player in players)
-                {
-                    if (player.Score > winner.Score)
-                    {
-                        winner = player;
-                    }
-                }
+                winner = (BlackjackPlayer)dealer;
+            }
 
-                if (dealer.Score > winner.Score)
+            // five card rule
+            foreach (BlackjackPlayer player in players)
+            {
+                if (player.Hand.Count == 5)
                 {
-                    winner = (BlackjackPlayer)dealer;
+                    winner = player;
                 }
             }
 
